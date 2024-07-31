@@ -13,29 +13,36 @@ import com.example.common.view.createSpinner
 class MainUI(private val context: Context, private val action: (String) -> Unit) {
     internal fun buildUI(layout: LinearLayout, elements: List<UIElement>) {
         layout.removeAllViews()
-
-        for (element in elements) {
-            val view: View = when (element.type) {
-                ElementType.BUTTON -> createButton(context, element, action)
-                ElementType.EDIT_TEXT -> createEditText(context, element)
-                ElementType.SPINNER -> createSpinner(context, element)
-                ElementType.EDIT_TEXT_CALENDAR -> createEditTextWithAction(context, element)
-                ElementType.COLUMN -> {
-                    val columnLayout = LinearLayout(context).apply { orientation = LinearLayout.VERTICAL }
-                    element.children?.let { buildUI(columnLayout, it) }
-                    columnLayout
-                }
-                ElementType.ROW -> {
-                    val rowLayout = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
-                    element.children?.let { buildUI(rowLayout, it) }
-                    rowLayout
-                }
-            }
-
+        elements.forEach { element ->
+            val view = createViewForElement(element)
             view.isEnabled = element.isEnabled
             view.visibility = if (element.isVisible) View.VISIBLE else View.GONE
             layout.addView(view)
         }
     }
+
+    private fun createViewForElement(element: UIElement): View {
+        return when (element.type) {
+            ElementType.BUTTON -> createButton(context, element, action)
+            ElementType.EDIT_TEXT -> createEditText(context, element)
+            ElementType.SPINNER -> createSpinner(context, element)
+            ElementType.EDIT_TEXT_CALENDAR -> createEditTextWithAction(context, element)
+            ElementType.COLUMN -> createColumnLayout(element)
+            ElementType.ROW -> createRowLayout(element)
+        }
+    }
+
+    private fun createColumnLayout(element: UIElement): LinearLayout {
+        val columnLayout = LinearLayout(context).apply { orientation = LinearLayout.VERTICAL }
+        element.children?.let { buildUI(columnLayout, it) }
+        return columnLayout
+    }
+
+    private fun createRowLayout(element: UIElement): LinearLayout {
+        val rowLayout = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
+        element.children?.let { buildUI(rowLayout, it) }
+        return rowLayout
+    }
+
 
 }
