@@ -8,9 +8,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 public abstract class JSONParser<T> @Inject constructor(
-    private val context: Context,
-    private val gson: Gson,
-    private val fileName: String
+    private val context: Context, private val gson: Gson, private val fileName: String
 ) {
 
     public abstract val clazz: Class<T>

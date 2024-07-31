@@ -9,7 +9,6 @@ import com.example.data.model.Gender
 import com.example.data.model.LastName
 import com.example.data.model.ProfileElement
 import com.example.data.model.Row
-import java.lang.reflect.Field
 
 
 fun convertUIElementsToProfile(elements: List<UIElement>): List<ProfileElement> {
@@ -46,6 +45,7 @@ fun convertUIElementsToProfile(elements: List<UIElement>): List<ProfileElement> 
                     elements.add(ProfileElement(Button = button))
                     button = null
                 }
+
                 ElementType.EDIT_TEXT -> {
                     lastName = LastName(
                         Id = element.id,
@@ -67,6 +67,7 @@ fun convertUIElementsToProfile(elements: List<UIElement>): List<ProfileElement> 
                     elements.add(ProfileElement(LastName = lastName))
                     lastName = null
                 }
+
                 ElementType.SPINNER -> {
                     gender = Gender(
                         Id = element.id,
@@ -89,6 +90,7 @@ fun convertUIElementsToProfile(elements: List<UIElement>): List<ProfileElement> 
                     elements.add(ProfileElement(Gender = gender))
                     gender = null
                 }
+
                 ElementType.EDIT_TEXT_CALENDAR -> {
                     birthday = Birthday(
                         Id = element.id,

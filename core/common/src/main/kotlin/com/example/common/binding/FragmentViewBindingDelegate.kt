@@ -33,11 +33,13 @@ public class FragmentViewBindingDelegate<T : ViewBinding>(
             throw IllegalStateException("Cannot access view bindings. View lifecycle is ${lifecycle.currentState}!")
         }
 
-        return bindingInflater.invoke(LayoutInflater.from(thisRef.context), null, false).also { this.binding = it }
+        return bindingInflater.invoke(LayoutInflater.from(thisRef.context), null, false)
+            .also { this.binding = it }
     }
 }
 
-public class ViewLifecycleObserver(private val onDestroyAction: () -> Unit) : LifecycleEventObserver {
+public class ViewLifecycleObserver(private val onDestroyAction: () -> Unit) :
+    LifecycleEventObserver {
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         if (event == Lifecycle.Event.ON_DESTROY) {

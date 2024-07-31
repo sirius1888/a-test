@@ -15,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getProfile: GetProfileUseCase,
-    private val updateProfile: UpdateProfileUseCase
+    private val getProfile: GetProfileUseCase, private val updateProfile: UpdateProfileUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUIState())
@@ -36,21 +35,15 @@ class MainViewModel @Inject constructor(
     private fun updateProfileElements(profile: RootJSON?) {
         profile?.let {
             _uiState.value = _uiState.value.copy(
-                profile = profile,
-                uiElements = convertProfileToUIElements(profile.ProfileElements)
+                profile = profile, uiElements = convertProfileToUIElements(profile.ProfileElements)
             )
         }
     }
 
     fun setEditing(state: Boolean) {
-        _uiState.value = _uiState.value.copy(
-            isEditing = state,
+        _uiState.value = _uiState.value.copy(isEditing = state,
             uiElements = _uiState.value.uiElements.map { element ->
-                if (
-                    element.type == ElementType.EDIT_TEXT ||
-                    element.type == ElementType.EDIT_TEXT_CALENDAR ||
-                    element.type == ElementType.SPINNER
-                ) {
+                if (element.type == ElementType.EDIT_TEXT || element.type == ElementType.EDIT_TEXT_CALENDAR || element.type == ElementType.SPINNER) {
                     element.copy(isEnabled = state)
                 } else {
                     element
@@ -62,8 +55,7 @@ class MainViewModel @Inject constructor(
                     "button_cancel_id" -> it.copy(isVisible = state)
                     else -> it
                 }
-            }
-        )
+            })
     }
 
     fun saveProfile() {

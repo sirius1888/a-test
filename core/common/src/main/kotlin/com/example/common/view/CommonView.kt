@@ -3,20 +3,14 @@ package com.example.common.view
 import android.R
 import android.app.DatePickerDialog
 import android.content.Context
-import android.util.Log
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Spinner
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.common.ui.UIElement
 import com.google.android.material.button.MaterialButton
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import kotlin.reflect.KProperty0
 
 public fun createButton(
     context: Context,
@@ -29,14 +23,20 @@ public fun createButton(
     }
 }
 
-public fun createEditText(context: Context, element: UIElement): EditText =
+public fun createEditText(
+    context: Context,
+    element: UIElement
+): EditText =
     EditText(context).apply {
         setText(element.field)
         hint = element.hint
         isEnabled = element.isEnabled
     }
 
-public fun createEditTextWithAction(context: Context, element: UIElement): EditText =
+public fun createEditTextWithAction(
+    context: Context,
+    element: UIElement
+): EditText =
     createEditText(context, element).apply {
         setOnClickListener {
             if (isEnabled) {
@@ -47,7 +47,10 @@ public fun createEditTextWithAction(context: Context, element: UIElement): EditT
         }
     }
 
-private fun showDatePickerDialog(context: Context, onDateSet: (String) -> Unit) {
+private fun showDatePickerDialog(
+    context: Context,
+    onDateSet: (String) -> Unit
+) {
     val calendar = Calendar.getInstance()
     val datePickerDialog = DatePickerDialog(
         context,
@@ -62,7 +65,11 @@ private fun showDatePickerDialog(context: Context, onDateSet: (String) -> Unit) 
     datePickerDialog.show()
 }
 
-private fun formatDate(day: Int, month: Int, year: Int): String {
+private fun formatDate(
+    day: Int,
+    month: Int,
+    year: Int
+): String {
     val calendar = Calendar.getInstance().apply {
         set(Calendar.DAY_OF_MONTH, day)
         set(Calendar.MONTH, month)
@@ -74,7 +81,10 @@ private fun formatDate(day: Int, month: Int, year: Int): String {
 }
 
 
-public fun createSpinner(context: Context, element: UIElement): Spinner = Spinner(context).apply {
+public fun createSpinner(
+    context: Context,
+    element: UIElement
+): Spinner = Spinner(context).apply {
     isEnabled = element.isEnabled
     val adapter = ArrayAdapter(
         context, R.layout.simple_spinner_item, element.options ?: emptyList()

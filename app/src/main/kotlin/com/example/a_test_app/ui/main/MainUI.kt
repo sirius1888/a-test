@@ -12,7 +12,7 @@ import com.example.common.view.createSpinner
 
 class MainUI(private val context: Context, private val action: (String) -> Unit) {
 
-    internal fun buildUI(layout: LinearLayout, elements: List<UIElement>, ) {
+    internal fun buildUI(layout: LinearLayout, elements: List<UIElement>) {
         layout.removeAllViews()
 
         for (element in elements) {
