@@ -109,76 +109,81 @@ class ProfileMapper @Inject constructor() {
         val uiElements = mutableListOf<UIElement>()
 
         profileElements.forEach { profileElement ->
-            when {
-                profileElement.Column != null -> {
-                    val columnElements = convertProfileToUIElements(profileElement.Column!!.ProfileElements)
-                    uiElements.add(
-                        UIElement(
-                            id = profileElement.Column!!.Id,
-                            type = ElementType.COLUMN,
-                            children = columnElements,
-                            isVisible = !profileElement.Column!!.Hide
-                        )
+            profileElement.Column?.let { column ->
+                val columnElements = convertProfileToUIElements(column.ProfileElements)
+                uiElements.add(
+                    UIElement(
+                        id = column.Id,
+                        type = ElementType.COLUMN,
+                        children = columnElements,
+                        isVisible = !column.Hide
                     )
-                }
-                profileElement.Row != null -> {
-                    val rowElements = convertProfileToUIElements(profileElement.Row!!.ProfileElements)
-                    uiElements.add(
-                        UIElement(
-                            id = profileElement.Row!!.Id,
-                            type = ElementType.ROW,
-                            children = rowElements,
-                            isVisible = !profileElement.Row!!.Hide
-                        )
+                )
+            }
+
+            profileElement.Row?.let { row ->
+                val rowElements = convertProfileToUIElements(row.ProfileElements)
+                uiElements.add(
+                    UIElement(
+                        id = row.Id,
+                        type = ElementType.ROW,
+                        children = rowElements,
+                        isVisible = !row.Hide
                     )
-                }
-                profileElement.Button != null -> {
-                    uiElements.add(
-                        UIElement(
-                            id = profileElement.Button!!.Id,
-                            type = ElementType.BUTTON,
-                            label = profileElement.Button!!.Label,
-                            isVisible = !profileElement.Button!!.Hide,
-                            isEnabled = !profileElement.Button!!.Disabled
-                        )
+                )
+            }
+
+            profileElement.Button?.let { button ->
+                uiElements.add(
+                    UIElement(
+                        id = button.Id,
+                        type = ElementType.BUTTON,
+                        label = button.Label,
+                        isVisible = !button.Hide,
+                        isEnabled = !button.Disabled
                     )
-                }
-                profileElement.LastName != null -> {
-                    uiElements.add(
-                        UIElement(
-                            id = profileElement.LastName!!.Id,
-                            type = ElementType.EDIT_TEXT,
-                            hint = profileElement.LastName!!.Label,
-                            isVisible = !profileElement.LastName!!.Hide,
-                            isEnabled = !profileElement.LastName!!.Disabled
-                        )
+                )
+            }
+
+            profileElement.LastName?.let { lastName ->
+                uiElements.add(
+                    UIElement(
+                        id = lastName.Id,
+                        type = ElementType.EDIT_TEXT,
+                        hint = lastName.Label,
+                        isVisible = !lastName.Hide,
+                        isEnabled = !lastName.Disabled
                     )
-                }
-                profileElement.Gender != null -> {
-                    uiElements.add(
-                        UIElement(
-                            id = profileElement.Gender!!.Id,
-                            type = ElementType.SPINNER,
-                            label = profileElement.Gender!!.Label,
-                            isVisible = !profileElement.Gender!!.Hide,
-                            isEnabled = !profileElement.Gender!!.Disabled,
-                            options = profileElement.Gender!!.SupportValues
-                        )
+                )
+            }
+
+            profileElement.Gender?.let { gender ->
+                uiElements.add(
+                    UIElement(
+                        id = gender.Id,
+                        type = ElementType.SPINNER,
+                        label = gender.Label,
+                        isVisible = !gender.Hide,
+                        isEnabled = !gender.Disabled,
+                        options = gender.SupportValues
                     )
-                }
-                profileElement.Birthday != null -> {
-                    uiElements.add(
-                        UIElement(
-                            id = profileElement.Birthday!!.Id,
-                            type = ElementType.EDIT_TEXT_CALENDAR,
-                            hint = profileElement.Birthday!!.Label,
-                            isVisible = !profileElement.Birthday!!.Hide,
-                            isEnabled = !profileElement.Birthday!!.Disabled
-                        )
+                )
+            }
+
+            profileElement.Birthday?.let { birthday ->
+                uiElements.add(
+                    UIElement(
+                        id = birthday.Id,
+                        type = ElementType.EDIT_TEXT_CALENDAR,
+                        hint = birthday.Label,
+                        isVisible = !birthday.Hide,
+                        isEnabled = !birthday.Disabled
                     )
-                }
+                )
             }
         }
+
         return uiElements
     }
+
 }
