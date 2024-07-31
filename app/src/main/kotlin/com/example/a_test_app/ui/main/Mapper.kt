@@ -33,7 +33,7 @@ fun convertUIElementsToProfile(elements: List<UIElement>): List<ProfileElement> 
                         Label = element.label ?: "",
                         Hide = !element.isVisible,
                         Disabled = !element.isEnabled,
-                        Action = null // Action should be set based on other logic
+                        Action = null
                     )
                     row?.let {
                         elements.add(ProfileElement(Row = it.copy(ProfileElements = elements)))
@@ -147,7 +147,7 @@ fun convertProfileToUIElements(elements: List<ProfileElement>): List<UIElement> 
                         label = button.Label,
                         isVisible = !button.Hide,
                         isEnabled = !button.Disabled,
-                        field = null // Поле не используется для кнопок
+                        field = null
                     )
                 )
             }
@@ -159,7 +159,7 @@ fun convertProfileToUIElements(elements: List<ProfileElement>): List<UIElement> 
                         hint = lastName.Label,
                         isVisible = !lastName.Hide,
                         isEnabled = !lastName.Disabled,
-                        field = lastName.Field // Устанавливаем поле
+                        field = lastName.Field
                     )
                 )
             }
@@ -171,7 +171,7 @@ fun convertProfileToUIElements(elements: List<ProfileElement>): List<UIElement> 
                         label = gender.Label,
                         options = gender.SupportValues,
                         isVisible = !gender.Hide,
-                        field = gender.Field // Устанавливаем поле
+                        field = gender.Field
                     )
                 )
             }
@@ -183,7 +183,7 @@ fun convertProfileToUIElements(elements: List<ProfileElement>): List<UIElement> 
                         hint = birthday.Label,
                         isVisible = !birthday.Hide,
                         isEnabled = !birthday.Disabled,
-                        field = birthday.Field // Устанавливаем поле
+                        field = birthday.Field
                     )
                 )
             }

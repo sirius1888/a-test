@@ -37,7 +37,6 @@ public class ViewBindingPropertyDelegate<T : ViewBinding>(
     override fun getValue(thisRef: AppCompatActivity, property: KProperty<*>): T {
         if (_value == null) {
 
-            // This must be on the main thread only
             if (Looper.myLooper() != Looper.getMainLooper()) {
                 throw IllegalThreadStateException("This cannot be called from other threads. It should be on the main thread only.")
             }

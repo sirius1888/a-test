@@ -1,6 +1,5 @@
 package com.example.data.model
 
-// RootJSON.kt
 public data class RootJSON(
     val TestMode: Boolean,
     val EmulationMode: Boolean,

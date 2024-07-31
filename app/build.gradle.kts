@@ -50,10 +50,6 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.activity.ktx)
-//    implementation(projects.core.data)
-//    implementation(projects.core.api)
-//    implementation(projects.core.common)
-//    api(projects.core.data)
 
     implementation(project(":core:common"))
     implementation(project(":core:data"))
