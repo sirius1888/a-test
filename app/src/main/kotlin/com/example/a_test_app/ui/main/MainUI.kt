@@ -30,6 +30,4 @@ class MainUI(private val context: Context, private val action: (String) -> Unit)
             }
         }
     }
-
-
 }

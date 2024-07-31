@@ -13,9 +13,10 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: ProfileViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
     private val binding by viewBinding(ActivityMainBinding::inflate)
     private val ui by lazy { MainUI(this, ::buttonActions) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -23,27 +24,22 @@ class MainActivity : AppCompatActivity() {
         val dynamicLayout: LinearLayout = binding.dynamicLayout
 
         lifecycleScope.launch {
-            viewModel.uiElements.collect { elements ->
-                ui.buildUI(dynamicLayout, elements)
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModel.isEditing.collect { isEditing ->
-                handleEditingMode(isEditing)
+            viewModel.uiState.collect { state ->
+                ui.buildUI(dynamicLayout, state.uiElements)
+                handleEditingMode(state.isEditing)
             }
         }
     }
 
     private fun buttonActions(id: String) {
         when (id) {
-            "button_edit_id" -> viewModel.isEditing(true)
+            "button_edit_id" -> viewModel.setEditing(true)
             "button_save_id" -> viewModel.saveProfile()
-            "button_cancel_id" -> viewModel.isEditing(false)
+            "button_cancel_id" -> viewModel.setEditing(false)
         }
     }
 
     private fun handleEditingMode(isEditing: Boolean) {
-        ui.buildUI(binding.dynamicLayout, viewModel.uiElements.value)
+
     }
 }
