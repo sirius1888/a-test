@@ -26,20 +26,15 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 ui.buildUI(dynamicLayout, state.uiElements)
-                handleEditingMode(state.isEditing)
             }
         }
     }
 
     private fun buttonActions(id: String) {
         when (id) {
-            "button_edit_id" -> viewModel.setEditing(true)
-            "button_save_id" -> viewModel.saveProfile()
-            "button_cancel_id" -> viewModel.setEditing(false)
+            "button_save_id" -> viewModel.updateProfile()
+            "button_edit_id" -> viewModel.onEditButtonClick()
+            "button_cancel_id" -> viewModel.onCancelButtonClick()
         }
-    }
-
-    private fun handleEditingMode(isEditing: Boolean) {
-
     }
 }

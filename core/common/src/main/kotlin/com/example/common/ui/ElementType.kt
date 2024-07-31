@@ -5,5 +5,7 @@ public enum class ElementType {
     BUTTON,
     EDIT_TEXT,
     SPINNER,
-    EDIT_TEXT_CALENDAR
+    EDIT_TEXT_CALENDAR,
+    COLUMN,
+    ROW,
 }

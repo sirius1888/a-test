@@ -7,7 +7,6 @@ import com.example.a_test_app.ui_logic.main.MainUIState
 import com.example.a_test_app.ui_logic.main.UpdateProfileUseCase
 import com.example.common.ui.ElementType
 import com.example.common.ui.UIElement
-import com.example.data.model.RootJSON
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getProfile: GetProfileUseCase,
-    private val updateProfile: UpdateProfileUseCase
+    private val getProfile: GetProfileUseCase, private val updateProfile: UpdateProfileUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUIState())
@@ -42,28 +40,63 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun setEditing(state: Boolean) {
-        _uiState.value = _uiState.value.copy(isEditing = state,
-            uiElements = _uiState.value.uiElements.map { element ->
-                if (element.type == ElementType.EDIT_TEXT || element.type == ElementType.EDIT_TEXT_CALENDAR || element.type == ElementType.SPINNER) {
-                    element.copy(isEnabled = state)
-                } else {
-                    element
-                }
-            }.map {
-                when (it.id) {
-                    "button_edit_id" -> it.copy(isVisible = !state)
-                    "button_save_id" -> it.copy(isVisible = state)
-                    "button_cancel_id" -> it.copy(isVisible = state)
-                    else -> it
+    fun updateProfile() {
+        viewModelScope.launch {
+            updateProfile.update(_uiState.value.uiElements)
+            onSaveButtonClick()
+        }
+    }
+
+    fun onEditButtonClick() {
+        _uiState.value = _uiState.value.copy(isEditing = true,
+            uiElements = updateElementsRecursively(_uiState.value.uiElements) { element ->
+                when (element.id) {
+                    "button_edit_id" -> element.copy(isVisible = false)
+                    "button_save_id", "button_cancel_id" -> element.copy(isVisible = true)
+                    else -> element.copy(isEnabled = true) // Включаем редактирование для всех элементов
                 }
             })
     }
 
-    fun saveProfile() {
-        viewModelScope.launch {
-            updateProfile.update(_uiState.value.uiElements)
-            setEditing(false)
+    fun onSaveButtonClick() {
+        _uiState.value = _uiState.value.copy(isEditing = false,
+            uiElements = updateElementsRecursively(_uiState.value.uiElements) { element ->
+                when (element.id) {
+                    "button_edit_id" -> element.copy(isVisible = true)
+                    "button_save_id", "button_cancel_id" -> element.copy(isVisible = false)
+                    else -> element.copy(isEnabled = false) // Выключаем редактирование для всех элементов
+                }
+            })
+    }
+
+    fun onCancelButtonClick() {
+        _uiState.value = _uiState.value.copy(isEditing = false,
+            uiElements = updateElementsRecursively(_uiState.value.uiElements) { element ->
+                when (element.id) {
+                    "button_edit_id" -> element.copy(isVisible = true)
+                    "button_save_id", "button_cancel_id" -> element.copy(isVisible = false)
+                    else -> element.copy(isEnabled = false) // Выключаем редактирование для всех элементов
+                }
+            })
+    }
+
+    private fun updateElementsRecursively(
+        elements: List<UIElement>,
+        update: (UIElement) -> UIElement
+    ): List<UIElement> {
+        return elements.map { element ->
+            if (element.type == ElementType.COLUMN ||
+                element.type == ElementType.ROW) {
+                element.copy(
+                    children =
+                    updateElementsRecursively(
+                        element.children ?: emptyList(),
+                        update
+                    )
+                )
+            } else {
+                update(element)
+            }
         }
     }
 }

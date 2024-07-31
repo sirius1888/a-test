@@ -80,7 +80,6 @@ public data class ActionGroup(
     val Actions: List<Action>
 )
 
-
 public data class HideElementAction(val ProfileElementId: String)
 public data class ShowElementAction(val ProfileElementId: String)
 public data class DisableElementAction(val ProfileElementId: String)

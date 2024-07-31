@@ -8,5 +8,6 @@ public data class UIElement(
     val options: List<String>? = null, // Только Для Spinner
     val isVisible: Boolean = true,
     val isEnabled: Boolean = true,
-    var field: String? = null
+    var field: String? = null,
+    var children: List<UIElement>? = null
 )

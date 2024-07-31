@@ -11,23 +11,31 @@ import com.example.common.view.createEditTextWithAction
 import com.example.common.view.createSpinner
 
 class MainUI(private val context: Context, private val action: (String) -> Unit) {
-
     internal fun buildUI(layout: LinearLayout, elements: List<UIElement>) {
         layout.removeAllViews()
 
         for (element in elements) {
-            val view = when (element.type) {
+            val view: View = when (element.type) {
                 ElementType.BUTTON -> createButton(context, element, action)
                 ElementType.EDIT_TEXT -> createEditText(context, element)
                 ElementType.SPINNER -> createSpinner(context, element)
                 ElementType.EDIT_TEXT_CALENDAR -> createEditTextWithAction(context, element)
+                ElementType.COLUMN -> {
+                    val columnLayout = LinearLayout(context).apply { orientation = LinearLayout.VERTICAL }
+                    element.children?.let { buildUI(columnLayout, it) }
+                    columnLayout
+                }
+                ElementType.ROW -> {
+                    val rowLayout = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
+                    element.children?.let { buildUI(rowLayout, it) }
+                    rowLayout
+                }
             }
 
-            if (view != null) {
-                view.isEnabled = element.isEnabled
-                view.visibility = if (element.isVisible) View.VISIBLE else View.GONE
-                layout.addView(view)
-            }
+            view.isEnabled = element.isEnabled
+            view.visibility = if (element.isVisible) View.VISIBLE else View.GONE
+            layout.addView(view)
         }
     }
+
 }
