@@ -11,3 +11,10 @@ public data class UIElement(
     var field: String? = null,
     var children: List<UIElement>? = null
 )
+public fun UIElement.setVisibility(isVisible: Boolean): UIElement {
+    return this.copy(isVisible = isVisible)
+}
+
+public fun UIElement.setEnabled(isEnabled: Boolean): UIElement {
+    return this.copy(isEnabled = isEnabled)
+}

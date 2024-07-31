@@ -7,6 +7,8 @@ import com.example.a_test_app.ui_logic.main.MainUIState
 import com.example.a_test_app.ui_logic.main.UpdateProfileUseCase
 import com.example.common.ui.ElementType
 import com.example.common.ui.UIElement
+import com.example.common.ui.setEnabled
+import com.example.common.ui.setVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,28 +17,26 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getProfile: GetProfileUseCase, private val updateProfile: UpdateProfileUseCase
+    private val getProfile: GetProfileUseCase,
+    private val updateProfile: UpdateProfileUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(MainUIState())
+    private val _uiState = MutableStateFlow(MainUIState(isLoading = true))
     val uiState: StateFlow<MainUIState> get() = _uiState
 
     init {
         loadProfileData()
     }
 
-    fun loadProfileData() {
+    private fun loadProfileData() {
         viewModelScope.launch {
-            val uiElements = getProfile.invoke()
-            updateProfileElements(uiElements)
-        }
-    }
-
-    private fun updateProfileElements(uiElements: List<UIElement>?) {
-        uiElements?.let {
-            _uiState.value = _uiState.value.copy(
-                uiElements = it
-            )
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            try {
+                val uiElements = getProfile.invoke() ?: listOf()
+                _uiState.value = _uiState.value.copy(uiElements = uiElements, isLoading = false)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(isLoading = false, error = e.message)
+            }
         }
     }
 
@@ -48,36 +48,28 @@ class MainViewModel @Inject constructor(
     }
 
     fun onEditButtonClick() {
-        _uiState.value = _uiState.value.copy(isEditing = true,
-            uiElements = updateElementsRecursively(_uiState.value.uiElements) { element ->
-                when (element.id) {
-                    "button_edit_id" -> element.copy(isVisible = false)
-                    "button_save_id", "button_cancel_id" -> element.copy(isVisible = true)
-                    else -> element.copy(isEnabled = true) // Включаем редактирование для всех элементов
-                }
-            })
+        updateUIStateForEditing(true)
     }
 
     fun onSaveButtonClick() {
-        _uiState.value = _uiState.value.copy(isEditing = false,
-            uiElements = updateElementsRecursively(_uiState.value.uiElements) { element ->
-                when (element.id) {
-                    "button_edit_id" -> element.copy(isVisible = true)
-                    "button_save_id", "button_cancel_id" -> element.copy(isVisible = false)
-                    else -> element.copy(isEnabled = false) // Выключаем редактирование для всех элементов
-                }
-            })
+        updateUIStateForEditing(false)
     }
 
     fun onCancelButtonClick() {
-        _uiState.value = _uiState.value.copy(isEditing = false,
+        updateUIStateForEditing(false)
+    }
+
+    private fun updateUIStateForEditing(isEditing: Boolean) {
+        _uiState.value = _uiState.value.copy(
+            isEditing = isEditing,
             uiElements = updateElementsRecursively(_uiState.value.uiElements) { element ->
                 when (element.id) {
-                    "button_edit_id" -> element.copy(isVisible = true)
-                    "button_save_id", "button_cancel_id" -> element.copy(isVisible = false)
-                    else -> element.copy(isEnabled = false) // Выключаем редактирование для всех элементов
+                    "button_edit_id" -> element.setVisibility(!isEditing)
+                    "button_save_id", "button_cancel_id" -> element.setVisibility(isEditing)
+                    else -> element.setEnabled(isEditing)
                 }
-            })
+            }
+        )
     }
 
     private fun updateElementsRecursively(
@@ -85,11 +77,9 @@ class MainViewModel @Inject constructor(
         update: (UIElement) -> UIElement
     ): List<UIElement> {
         return elements.map { element ->
-            if (element.type == ElementType.COLUMN ||
-                element.type == ElementType.ROW) {
+            if (element.type == ElementType.COLUMN || element.type == ElementType.ROW) {
                 element.copy(
-                    children =
-                    updateElementsRecursively(
+                    children = updateElementsRecursively(
                         element.children ?: emptyList(),
                         update
                     )
