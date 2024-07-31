@@ -1,0 +1,218 @@
+{
+    "TestMode": false,
+    "EmulationMode": false,
+    "ProfileElements": [
+        {
+            "Column": {
+                "Id": "column-1",
+                "Hide": false,
+                "ProfileElements": [
+                    {
+                        "Row": {
+                            "Id": "EditButtonRow",
+                            "Hide": false,
+                            "ProfileElements": [
+                                {
+                                    "Button": {
+                                        "Id": "button_edit_id",
+                                        "Label": "Редактировать",
+                                        "Hide": false,
+                                        "Disabled": false,
+                                        "Action": {
+                                            "ActionGroup": {
+                                                "Actions": [
+                                                    {
+                                                        "ActionGroup": {
+                                                            "Actions": [
+                                                                {
+                                                                    "HideElementAction": {
+                                                                        "ProfileElementId": "button_edit_id"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "ShowElementAction": {
+                                                                        "ProfileElementId": "button_save_id"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "ShowElementAction": {
+                                                                        "ProfileElementId": "button_cancel_id"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "ActionGroup": {
+                                                            "Actions": []
+                                                        }
+                                                    },
+                                                    {
+                                                        "ActionGroup": {
+                                                            "Actions": [
+                                                                {
+                                                                    "EnableElementAction": {
+                                                                        "ProfileElementId": "last-name"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "EnableElementAction": {
+                                                                        "ProfileElementId": "gender",
+                                                                        "Condition": null
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "EnableElementAction": {
+                                                                        "ProfileElementId": "birthday",
+                                                                        "Condition": null
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Button": {
+                                        "Id": "button_save_id",
+                                        "Label": "Сохранить",
+                                        "Hide": true,
+                                        "Disabled": false,
+                                        "Action": {
+                                            "ActionGroup": {
+                                                "Actions": [
+                                                    {
+                                                        "ActionGroup": {
+                                                            "Actions": [
+                                                                {
+                                                                    "ShowElementAction": {
+                                                                        "ProfileElementId": "button_edit_id"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "HideElementAction": {
+                                                                        "ProfileElementId": "button_save_id"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "HideElementAction": {
+                                                                        "ProfileElementId": "button_cancel_id"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "ActionGroup": {
+                                                            "Actions": [
+                                                                {
+                                                                    "DisableElementAction": {
+                                                                        "ProfileElementId": "last-name",
+                                                                        "Condition": null
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "DisableElementAction": {
+                                                                        "ProfileElementId": "gender",
+                                                                        "Condition": null
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "DisableElementAction": {
+                                                                        "ProfileElementId": "birthday",
+                                                                        "Condition": null
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "ActionGroup": {
+                                                            "Actions": [
+                                                                {
+                                                                    "SaveCustomerAction": {
+                                                                        "LastNameId": "last-name",
+                                                                        "GenderId": "gender",
+                                                                        "BirthdayId": "birthday"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "Button": {
+                                        "Id": "button_cancel_id",
+                                        "Label": "Отменить",
+                                        "Hide": true,
+                                        "Disabled": false,
+                                        "Action": {
+                                            "ActionGroup": {
+                                                "Actions": [
+                                                    {
+                                                        "ReloadDataAction": {}
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "LastName": {
+                            "Id": "last-name",
+                            "Label": "Фамилия",
+                            "Hide": false,
+                            "Disabled": true,
+                            "IgnoreCustomerData": false,
+                            "Validators": []
+                        }
+                    },
+                    {
+                        "Gender": {
+                            "Id": "gender",
+                            "Label": "Ваш пол",
+                            "Hide": false,
+                            "Disabled": true,
+                            "IgnoreCustomerData": false,
+                            "SupportValues": [
+                                "Male",
+                                "Female"
+                            ],
+                            "GenderValueMaps": [
+                                {
+                                    "GenderType": "Male",
+                                    "Label": "Мужской"
+                                },
+                                {
+                                    "GenderType": "Female",
+                                    "Label": "Женский"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "Birthday": {
+                            "Id": "birthday",
+                            "Label": "Дата рождения",
+                            "Hide": false,
+                            "Disabled": true,
+                            "IgnoreCustomerData": false,
+                            "Validators": []
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
+
