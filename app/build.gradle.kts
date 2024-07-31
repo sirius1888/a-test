@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kapt)
     alias(libs.plugins.dagger.hilt.android)
-//    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -50,19 +49,18 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.activity.ktx)
 //    implementation(projects.core.data)
 //    implementation(projects.core.api)
 //    implementation(projects.core.common)
 //    api(projects.core.data)
 
+    implementation(project(":core:common"))
+    implementation(project(":core:data"))
+    implementation(project(":core:api"))
+
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
-
-//    debugImplementation(libs.okhttp.logging.interceptor)
-
-//    implementation(libs.androidx.lifecycle.runtime.ktx.v240)
-//    implementation(libs.kotlinx.coroutines.android.v152)
-//    implementation(libs.coil)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
