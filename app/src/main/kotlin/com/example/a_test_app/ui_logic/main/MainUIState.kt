@@ -4,7 +4,8 @@ import com.example.common.ui.UIElement
 import com.example.data.model.RootJSON
 
 data class MainUIState(
-    val profile: RootJSON? = null,
     val uiElements: List<UIElement> = emptyList(),
-    val isEditing: Boolean = false
+    val isEditing: Boolean = false,
+    val isLoading: Boolean = false,
+    val error: String? = null
 )
