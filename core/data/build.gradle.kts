@@ -8,9 +8,8 @@ plugins {
 kotlin {
     explicitApi = ExplicitApiMode.Strict
 }
-
 android {
-    namespace = "com.example.common"
+    namespace = "com.example.data"
     compileSdk = libs.versions.androidSdk.compile.get().toInt()
 
     defaultConfig {
@@ -25,17 +24,24 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
-    buildFeatures{
-        viewBinding = true
-    }
 }
 
 dependencies {
-    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.kotlinx.coroutines.core)
-    api(libs.kotlinx.immutable)
-    implementation(libs.material)
+    implementation(libs.kotlinx.coroutines.android)
+
+    implementation(project(":core:common"))
+    implementation(project(":core:api"))
+
+    implementation(libs.javax.inject)
 }
 
+dependencies {
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+}
