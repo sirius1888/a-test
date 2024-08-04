@@ -10,7 +10,6 @@ plugins {
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.jetbrainsKotlinJvm) apply false
     alias(libs.plugins.androidLibrary) apply false
-    alias(libs.plugins.ksp) apply false
 }
 
 allprojects.onEach { project ->
